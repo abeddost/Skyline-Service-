@@ -1,0 +1,174 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Icon from '../components/Icon.astro';
+import ServiceGrid from '../components/ServiceGrid.astro';
+import Steps from '../components/Steps.astro';
+import Configurator from '../components/Configurator.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import AreaMap from '../components/AreaMap.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { services } from '../data/services';
+import { faqSchema } from '../lib/schema';
+import { flags, whatsappLink } from '../config';
+
+// Two more questions (weekend work, how fast a quote arrives) are waiting for
+// the owner's confirmation; see the README.
+const faqs = [
+  {
+    q: 'Was kostet eine Reinigung, ein Umzug oder eine Entrümpelung?',
+    a: 'Jeder Auftrag ist anders. Deshalb erhalten Sie von uns ein Festpreisangebot, nachdem wir uns das Objekt angesehen oder Fotos von Ihnen bekommen haben. Die Anfrage ist unverbindlich.',
+  },
+  {
+    q: 'In welchen Gebieten sind Sie tätig?',
+    a: 'Wir arbeiten in ganz Frankfurt am Main und in der Umgebung. Wenn Sie unsicher sind, ob Ihr Ort dazugehört, fragen Sie einfach kurz per WhatsApp oder Telefon nach.',
+  },
+  {
+    q: 'Bringen Sie Reinigungsmittel mit?',
+    a: 'Ja. Wir bringen alle Reinigungsmittel und Geräte mit und arbeiten mit umweltfreundlichen Reinigungsmitteln.',
+  },
+  {
+    q: 'Übernehmen Sie auch die Möbelmontage?',
+    a: 'Ja. Wir bauen Möbel ab und wieder auf, beim Umzug oder als einzelner Auftrag.',
+  },
+  {
+    q: 'Entsorgen Sie Sperrmüll fachgerecht?',
+    a: 'Ja. Bei Entrümpelungen und Haushaltsauflösungen kümmern wir uns um die fachgerechte Entsorgung.',
+  },
+  {
+    q: 'Bieten Sie regelmäßige Reinigung für Firmen und Hausverwaltungen an?',
+    a: 'Ja. Büros, Gebäude und Treppenhäuser reinigen wir in einem festen Rhythmus, den wir mit Ihnen abstimmen.',
+  },
+];
+---
+
+<Base
+  title="Gebäudereinigung, Umzug & Entrümpelung Frankfurt | Skyline"
+  description="Gebäude-, Büro- & Treppenhausreinigung, Umzüge und Entrümpelung in Frankfurt. Zuverlässig, pünktlich, umweltfreundlich. Jetzt unverbindlich anfragen."
+  schema={[faqSchema(faqs)]}
+>
+  <Hero />
+
+  <section class="section" id="leistungen">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Leistungen</p>
+        <h2>Unsere Leistungen in <span class="gold">Frankfurt</span></h2>
+        <p>Reinigung, Umzug und Entrümpelung aus einer Hand. Wählen Sie eine Leistung für Umfang, Ablauf und häufige Fragen.</p>
+      </div>
+      <ServiceGrid />
+    </div>
+  </section>
+
+  {
+    flags.introVideo && (
+      <section class="section section--alt" id="video">
+        <div class="container">
+          <div class="section-head section-head--center" data-reveal>
+            <p class="eyebrow">In 35 Sekunden erklärt</p>
+            <h2>Skyline Service im Überblick</h2>
+          </div>
+          <video
+            class="split__media"
+            style="width:100%;aspect-ratio:16/9"
+            controls
+            muted
+            playsinline
+            preload="none"
+            poster="/assets/video/intro-poster.webp"
+          >
+            <source src="/assets/video/intro-9x16.mp4" type="video/mp4" media="(max-width: 700px)" />
+            <source src="/assets/video/intro-16x9.mp4" type="video/mp4" />
+            <track kind="captions" src="/assets/video/intro.vtt" srclang="de" label="Deutsch" default />
+          </video>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section section--alt" id="vorher-nachher">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Vorher / Nachher</p>
+        <h2>Der Unterschied, <span class="gold">sichtbar</span> gemacht</h2>
+        <p>
+          Ziehen Sie den Regler mit Maus oder Finger über das Bild oder tippen Sie auf „Vorher“ und „Nachher“. Unter jedem Bild
+          geht es zur passenden Leistung.
+        </p>
+      </div>
+      <div class="ba-grid" data-ba-grid>
+        {
+          services.map((s, i) => (
+            <div class="ba-card">
+              <BeforeAfter pair={s.slider} alt={s.sliderAlt} sizes="(min-width: 1040px) 380px, (min-width: 640px) 46vw, 94vw" />
+              <a class="ba-card__cap" href={`/${s.slug}`}>
+                <b>{String(i + 1).padStart(2, '0')}</b>
+                {s.name}
+                <Icon name="arrow" size={18} />
+              </a>
+            </div>
+          ))
+        }
+      </div>
+      <button class="btn btn--outline btn--block ba-grid__more" type="button" data-ba-more>
+        Alle {services.length} Vergleiche zeigen
+      </button>
+      {
+        flags.beforeAfterIsSymbolic && (
+          <p class="note">Die Vergleichsbilder und die Bilder ganz oben sind Symbolbilder und zeigen keine tatsächlich ausgeführten Aufträge.</p>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="section" id="angebot">
+    <div class="container">
+      <div class="section-head section-head--center" data-reveal>
+        <p class="eyebrow">Angebot</p>
+        <h2>Angebot in <span class="gold">drei Schritten</span> anfragen</h2>
+        <p>Die Anfrage dauert etwa eine Minute und ist unverbindlich. Sie senden sie am Ende per WhatsApp.</p>
+      </div>
+      <Steps />
+      <Configurator />
+    </div>
+  </section>
+
+  <section class="section section--alt" id="einsatzgebiet">
+    <div class="container">
+      <div class="split">
+        <div data-reveal>
+          <p class="eyebrow">Einsatzgebiet</p>
+          <h2>Im Einsatz in ganz <span class="gold">Frankfurt</span> und Umgebung</h2>
+          <p>
+            Von Höchst bis Fechenheim, von Eschersheim bis Sachsenhausen: Wir sind in allen Frankfurter Stadtteilen unterwegs und
+            auch in der Umgebung für Privat- und Gewerbekunden im Einsatz.
+          </p>
+          <a class="btn btn--outline" href="/einsatzgebiet">Alle Stadtteile ansehen</a>
+        </div>
+        <div data-reveal><AreaMap /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="faq-layout">
+        <div class="faq-layout__head" data-reveal>
+          <p class="eyebrow">Häufige Fragen</p>
+          <h2>Fragen zu Preisen, Ablauf und Einsatzgebiet</h2>
+        </div>
+        <Faq items={faqs} />
+        <div class="aside-box">
+          <p><strong>Ihre Frage ist nicht dabei?</strong> Schreiben Sie uns kurz per WhatsApp oder rufen Sie an.</p>
+          <a class="btn btn--wa btn--block" href={whatsappLink()} target="_blank" rel="noopener" data-track="click_whatsapp">
+            <Icon name="whatsapp" size={18} />
+            Frage per WhatsApp stellen
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>

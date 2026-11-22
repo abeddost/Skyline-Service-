@@ -1,0 +1,23 @@
+---
+const steps = [
+  { title: 'Anfragen', text: 'Online, per WhatsApp oder Telefon.' },
+  { title: 'Angebot erhalten', text: 'Transparent und unverbindlich.' },
+  { title: 'Zurücklehnen', text: 'Wir erledigen den Rest.' },
+];
+---
+
+<ol class="steps">
+  {
+    steps.map((s, i) => (
+      <li class="step">
+        <span class="step__num" aria-hidden="true">
+          {i + 1}
+        </span>
+        <div>
+          <h3>{s.title}</h3>
+          <p>{s.text}</p>
+        </div>
+      </li>
+    ))
+  }
+</ol>

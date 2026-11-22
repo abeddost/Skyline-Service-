@@ -1,0 +1,68 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { business, mailLink } from '../config';
+
+const crumbs = [
+  { name: 'Startseite', href: '/' },
+  { name: 'Impressum', href: '/impressum' },
+];
+---
+
+<Base
+  title="Impressum – Skyline Service Frankfurt am Main"
+  description="Impressum von Skyline Service Rasheed Khodjazada, Grazer Weg 38, 60599 Frankfurt am Main. Angaben gemäß § 5 DDG und Kontakt."
+  crumbs={crumbs}
+>
+  <PageHero title="Impressum" crumbs={crumbs} cta={false} />
+
+  <section class="section section--flush">
+    <div class="container legal">
+      <h2>Angaben gemäß § 5 DDG</h2>
+      <p>
+        {business.legalName}<br />
+        Inhaber: {business.owner}<br />
+        {business.street}<br />
+        {`${business.postalCode} ${business.city}`}<br />
+        Deutschland
+      </p>
+
+      <h2>Kontakt</h2>
+      <p>
+        Telefon: <a href={business.phoneHref}>{business.phoneDisplay}</a><br />
+        E-Mail: <a href={mailLink}>{business.email}</a>
+      </p>
+
+      <h2>Verantwortlich für den Inhalt</h2>
+      <p>
+        {business.owner}<br />
+        {business.street}, {`${business.postalCode} ${business.city}`}
+      </p>
+
+      <h2>Verbraucherstreitbeilegung</h2>
+      <p>
+        Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle
+        teilzunehmen.
+      </p>
+
+      <h2>Haftung für Inhalte</h2>
+      <p>
+        Die Inhalte dieser Website wurden mit Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte
+        können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir für eigene Inhalte auf diesen Seiten nach den
+        allgemeinen Gesetzen verantwortlich.
+      </p>
+
+      <h2>Haftung für Links</h2>
+      <p>
+        Diese Website enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Für die Inhalte der
+        verlinkten Seiten ist stets der jeweilige Anbieter verantwortlich.
+      </p>
+
+      <h2>Urheberrecht und Bildnachweis</h2>
+      <p>
+        Die Inhalte dieser Website unterliegen dem deutschen Urheberrecht. Die Fotos und Vergleichsbilder auf dieser Website sind mit
+        Hilfe von künstlicher Intelligenz erstellte Symbolbilder. Sie zeigen keine realen Personen, Objekte oder Aufträge.
+      </p>
+    </div>
+  </section>
+</Base>

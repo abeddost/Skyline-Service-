@@ -1,0 +1,71 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { business } from '../config';
+import { services } from '../data/services';
+
+const current = Astro.url.pathname.replace(/\.html$/, '').replace(/(.)\/$/, '$1');
+const links = [
+  { href: '/einsatzgebiet', label: 'Einsatzgebiet' },
+  { href: '/ueber-uns', label: 'Über uns' },
+  { href: '/kontakt', label: 'Kontakt' },
+];
+---
+
+<header class="header" data-header>
+  <div class="container header__inner">
+    <a class="header__logo" href="/" aria-label="Skyline Service – zur Startseite">
+      <Logo id="logo-header" />
+    </a>
+
+    <nav class="nav" aria-label="Hauptnavigation">
+      <div class="nav__item">
+        <button type="button" aria-haspopup="true">
+          Leistungen <Icon name="chevron" size={16} />
+        </button>
+        <ul class="nav__drop">
+          {
+            services.map((s) => (
+              <li>
+                <a href={`/${s.slug}`} aria-current={current === `/${s.slug}` ? 'page' : undefined}>
+                  {s.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      {
+        links.map((l) => (
+          <a href={l.href} aria-current={current === l.href ? 'page' : undefined}>
+            {l.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="header__actions">
+      <a class="btn btn--outline btn--sm header__phone" href={business.phoneHref} data-track="click_call">
+        <Icon name="phone" size={18} />
+        {business.phoneDisplay}
+      </a>
+      <a class="btn btn--gold btn--sm header__cta" href="/angebot">Angebot anfragen</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" data-menu-btn>
+        <span class="sr-only">Menü öffnen oder schließen</span>
+        <span data-open><Icon name="menu" /></span>
+        <span data-close><Icon name="close" /></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobile-nav" aria-label="Mobile Navigation" data-mobile-nav>
+  <p class="mobile-nav__label">Leistungen</p>
+  {services.map((s) => <a href={`/${s.slug}`}>{s.name}</a>)}
+  <p class="mobile-nav__label">Unternehmen</p>
+  {links.map((l) => <a href={l.href}>{l.label}</a>)}
+  <a href="/angebot">Angebot anfragen</a>
+  <p class="mobile-nav__label">Rechtliches</p>
+  <a href="/impressum">Impressum</a>
+  <a href="/datenschutz">Datenschutz</a>
+</nav>

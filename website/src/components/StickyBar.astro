@@ -1,0 +1,31 @@
+---
+import Icon from './Icon.astro';
+import { business, whatsappLink } from '../config';
+---
+
+<div class="sticky-bar" data-sticky-bar>
+  <a href={business.phoneHref} data-track="click_call">
+    <Icon name="phone" size={20} />
+    Anrufen
+  </a>
+  <a href={whatsappLink()} target="_blank" rel="noopener" data-track="click_whatsapp">
+    <Icon name="whatsapp" size={20} />
+    WhatsApp
+  </a>
+  <a href="/angebot">
+    <Icon name="check" size={20} />
+    Angebot
+  </a>
+</div>
+
+<a
+  class="wa-fab"
+  href={whatsappLink()}
+  target="_blank"
+  rel="noopener"
+  aria-label="Per WhatsApp schreiben"
+  data-wa-fab
+  data-track="click_whatsapp"
+>
+  <Icon name="whatsapp" size={28} />
+</a>

@@ -1,0 +1,239 @@
+---
+// One template for all service pages. The content lives in data/services.ts.
+//
+// Order, most important first:
+//   1. Hero: what it is, where, and the two main actions
+//   2. What is included (checklist + photo)
+//   3. Comparison table, where a service has options to compare
+//   4. Before / after
+//   5. Request a quote (steps + configurator)
+//   6. Who it is for (three columns)
+//   7. Optional reading: details and questions as accordions, side by side
+//   8. Related services, closing call to action
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import Steps from '../components/Steps.astro';
+import Configurator from '../components/Configurator.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import ServiceGrid from '../components/ServiceGrid.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { services, type Service } from '../data/services';
+import { photo } from '../lib/images';
+import { serviceSchema, faqSchema } from '../lib/schema';
+import { flags } from '../config';
+import { shy } from '../lib/text';
+
+export function getStaticPaths() {
+  return services.map((s) => ({ params: { slug: s.slug }, props: { service: s } }));
+}
+
+interface Props {
+  service: Service;
+}
+const { service: s } = Astro.props;
+const crumbs = [
+  { name: 'Startseite', href: '/' },
+  { name: s.name, href: `/${s.slug}` },
+];
+const og = await getImage({ src: photo(s.image), width: 1200, height: 630, fit: 'cover', format: 'jpg', quality: 78 });
+const whom = [
+  { icon: 'home', title: 'Privat', text: s.forWhom.privat },
+  { icon: 'briefcase', title: 'Gewerbe', text: s.forWhom.gewerbe },
+  { icon: 'keys', title: 'Hausverwaltungen', text: s.forWhom.verwaltung },
+];
+// Pages with a hero clip show the main photo next to the checklist; pages
+// with a photo hero use the second photo there, so nothing appears twice.
+const scopePhoto = s.video ? { src: photo(s.image), alt: s.imageAlt } : { src: photo(s.image2), alt: s.image2Alt };
+// "zur Gebäudereinigung", but "zum Umzugsservice".
+const zu = s.key === 'umzug' ? 'zum' : 'zur';
+const name = shy(s.name);
+const details = s.sections.map((sec) => ({ q: sec.h2, a: sec.paragraphs }));
+---
+
+<Base
+  title={s.title}
+  description={s.description}
+  crumbs={crumbs}
+  schema={[serviceSchema(s, Astro.site, og.src), faqSchema(s.faqs)]}
+  ogImage={og.src}
+>
+  <PageHero
+    title={shy(s.h1)}
+    eyebrow={s.tagline}
+    crumbs={crumbs}
+    video={s.video}
+    image={photo(s.image)}
+    mediaAlt={s.video ? s.videoAlt : s.imageAlt}
+    info
+  />
+
+  <section class="section" id="leistungsumfang">
+    <div class="container">
+      <div class="split">
+        <div data-reveal>
+          <p class="eyebrow">Leistungsumfang</p>
+          <h2>Das gehört {zu} {name}</h2>
+          {s.intro.map((p) => <p>{p}</p>)}
+          <ul class="checklist">
+            {
+              s.scope.map((item) => (
+                <li>
+                  <Icon name="check" size={16} />
+                  <span>
+                    <strong>{item.title}:</strong> {item.text}
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div class="split__media" data-reveal>
+          <Image
+            src={scopePhoto.src}
+            alt={scopePhoto.alt}
+            width={1200}
+            height={900}
+            fit="cover"
+            widths={[480, 800, 1200]}
+            sizes="(min-width: 900px) 560px, 94vw"
+            format="webp"
+            quality={72}
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {
+    s.compare && (
+      <section class="section section--light" id="vergleich">
+        <div class="container">
+          <div class="section-head" data-reveal>
+            <p class="eyebrow">Im Vergleich</p>
+            <h2>{shy(s.compare.title)}</h2>
+            {s.compare.intro && <p>{s.compare.intro}</p>}
+          </div>
+          <table class="ctable" data-reveal>
+            <thead>
+              <tr>
+                {s.compare.head.map((h) => (h ? <th scope="col">{h}</th> : <td />))}
+              </tr>
+            </thead>
+            <tbody>
+              {s.compare.rows.map((row) => (
+                <tr>
+                  {row.map((cell, i) =>
+                    i === 0 ? (
+                      <th scope="row">{cell}</th>
+                    ) : (
+                      <td data-label={s.compare!.head[i]} data-empty={cell === '–' ? '' : undefined}>
+                        {cell}
+                      </td>
+                    ),
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    )
+  }
+
+  <section class:list={['section', !s.compare && 'section--alt']} id="vorher-nachher">
+    <div class="container">
+      <div class="ba-layout">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Vorher / Nachher</p>
+          <h2>{name}: vorher und nachher</h2>
+          <p>Ziehen Sie den Regler mit Maus oder Finger über das Bild oder tippen Sie auf „Vorher“ und „Nachher“.</p>
+          <a class="btn btn--outline" href="#angebot">Angebot anfragen</a>
+        </div>
+        <div>
+          <BeforeAfter pair={s.slider} alt={s.sliderAlt} />
+          <p class="note">
+            {
+              flags.beforeAfterIsSymbolic
+                ? 'Alle Bilder auf dieser Seite sind Symbolbilder und zeigen keinen tatsächlich ausgeführten Auftrag.'
+                : 'Die Fotos auf dieser Seite sind Symbolbilder.'
+            }
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class:list={['section', s.compare && 'section--alt']} id="angebot">
+    <div class="container">
+      <div class="section-head section-head--center" data-reveal>
+        <p class="eyebrow">Angebot</p>
+        <h2>{name}: Angebot anfragen</h2>
+        <p>
+          Die Leistung ist bereits ausgewählt. Ergänzen Sie ein paar Details und senden Sie die Anfrage per WhatsApp. Nach einer
+          Besichtigung oder anhand Ihrer Fotos erhalten Sie ein Festpreisangebot.
+        </p>
+      </div>
+      <Steps />
+      <Configurator preselect={s.key} />
+    </div>
+  </section>
+
+  <section class:list={['section', !s.compare && 'section--alt']} id="fuer-wen">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Für wen</p>
+        <h2>{name} für Privat, Gewerbe und Hausverwaltungen</h2>
+      </div>
+      <div class="grid grid--3 whom">
+        {
+          whom.map((w, i) => (
+            <div class="card" data-reveal style={`--d:${i * 0.06}s`}>
+              <h3>
+                <Icon name={w.icon} size={24} ring />
+                {w.title}
+              </h3>
+              <p>{w.text}</p>
+            </div>
+          ))
+        }
+      </div>
+      <p class="note">
+        Wir sind in allen Frankfurter Stadtteilen im Einsatz, von Sachsenhausen über die Innenstadt bis Bornheim, Bockenheim und
+        Höchst, und auch in der Umgebung. <a href="/einsatzgebiet">Zum Einsatzgebiet</a>
+      </p>
+    </div>
+  </section>
+
+  <section class:list={['section', s.compare && 'section--alt']} id="faq">
+    <div class="container">
+      <div class="cols">
+        <div data-reveal>
+          <p class="eyebrow">Im Detail</p>
+          <h2>Mehr {zu} {name} in Frankfurt</h2>
+          <Faq items={details} />
+        </div>
+        <div data-reveal>
+          <p class="eyebrow">Häufige Fragen</p>
+          <h2>Fragen {zu} {name}</h2>
+          <Faq items={s.faqs} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class:list={['section', !s.compare && 'section--alt']}>
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Passt dazu</p>
+        <h2>Weitere Leistungen von Skyline Service</h2>
+      </div>
+      <ServiceGrid only={s.related} />
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>

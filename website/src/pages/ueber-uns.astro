@@ -1,0 +1,112 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import ServiceGrid from '../components/ServiceGrid.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { business } from '../config';
+import { photo } from '../lib/images';
+
+const crumbs = [
+  { name: 'Startseite', href: '/' },
+  { name: 'Über uns', href: '/ueber-uns' },
+];
+const values = [
+  {
+    icon: 'clock',
+    title: 'Zuverlässig und pünktlich',
+    text: 'Vereinbarte Termine gelten. Sie müssen nicht nachtelefonieren und nicht warten.',
+  },
+  {
+    icon: 'diamond',
+    title: 'Hohe Qualität',
+    text: 'Wir arbeiten gründlich und sehen auch dort hin, wo man nicht sofort hinschaut.',
+  },
+  {
+    icon: 'leaf',
+    title: 'Umweltfreundliche Reinigungsmittel',
+    text: 'Gut für die Oberflächen in Ihren Räumen und für alle, die sich darin aufhalten.',
+  },
+];
+---
+
+<Base
+  title="Über uns – Skyline Service aus Frankfurt am Main"
+  description="Skyline Service ist ein inhabergeführter Betrieb aus Frankfurt für Reinigung, Umzug und Entrümpelung. Sauber. Zuverlässig. Professionell. Jetzt anfragen."
+  crumbs={crumbs}
+>
+  <PageHero title="Über Skyline Service" eyebrow="Sauber. Zuverlässig. Professionell." crumbs={crumbs} image={photo('handshake-office')} mediaAlt="Handschlag zwischen Auftraggeber und Reinigungskraft im Empfangsbereich" ctaHref="/angebot">
+    <p>
+      Skyline Service ist ein inhabergeführter Betrieb aus Frankfurt am Main. Wir reinigen Gebäude, Büros und Treppenhäuser,
+      organisieren Umzüge und räumen Keller, Dachböden und ganze Wohnungen.
+    </p>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <div class="split">
+        <div class="prose">
+          <p class="eyebrow">Wer wir sind</p>
+          <h2>Ein Ansprechpartner für alles</h2>
+          <p>
+            Hinter Skyline Service steht {business.owner} als Inhaber. Wer bei uns anfragt, spricht nicht mit einem Callcenter, sondern
+            direkt mit dem Betrieb, der die Arbeit ausführt.
+          </p>
+          <p>
+            Unser Motto lautet „{business.claim}“. Das heißt für uns: klare Absprachen, ein fester Plan und ein Ergebnis, auf das Sie
+            sich verlassen können. Das gilt für die wöchentliche Büroreinigung genauso wie für den einmaligen Umzug.
+          </p>
+          <p>
+            Wir arbeiten für Privat- und Gewerbekunden: für Mieter und Eigentümer, für Unternehmen und Praxen, für Hausverwaltungen
+            und Eigentümergemeinschaften in Frankfurt und Umgebung.
+          </p>
+        </div>
+        <div class="split__media">
+          <Image
+            src={photo('eco-products')}
+            alt="Umweltfreundliche Reinigungsmittel, Mikrofasertücher und ein Eukalyptuszweig"
+            widths={[480, 800, 1200]}
+            sizes="(min-width: 900px) 560px, 94vw"
+            format="webp"
+            quality={72}
+            loading="lazy"
+          />
+        </div>
+      </div>
+      <p class="note">Die Bilder auf dieser Seite sind Symbolbilder.</p>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Wofür wir stehen</p>
+        <h2>Drei Dinge, die Sie von uns erwarten können</h2>
+      </div>
+      <div class="grid grid--3">
+        {
+          values.map((v) => (
+            <div class="card">
+              <Icon name={v.icon} size={26} ring />
+              <h3 style="margin-top:16px">{v.title}</h3>
+              <p style="margin:0">{v.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Leistungen</p>
+        <h2>Was wir für Sie tun</h2>
+      </div>
+      <ServiceGrid />
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>

@@ -1,0 +1,24 @@
+---
+import Icon from './Icon.astro';
+import { services } from '../data/services';
+interface Props {
+  only?: string[];
+}
+const { only } = Astro.props;
+const list = only ? services.filter((s) => only.includes(s.slug)) : services;
+---
+
+<div class:list={['grid', only ? 'related' : 'grid--3']}>
+  {
+    list.map((s, i) => (
+      <a class="card service-card" href={`/${s.slug}`} data-reveal style={`--d:${i * 0.05}s`}>
+        <Icon name={s.icon} size={26} ring />
+        <h3>{s.name}</h3>
+        <p class="service-card__tag">{s.tagline}</p>
+        <span class="service-card__more">
+          <span>Mehr erfahren</span> <Icon name="arrow" size={18} />
+        </span>
+      </a>
+    ))
+  }
+</div>

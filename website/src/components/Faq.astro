@@ -1,0 +1,26 @@
+---
+// Accordion. Used for questions and for optional long-form details: the text
+// stays in the HTML (and readable for search engines) but only takes up space
+// when a visitor opens it.
+interface Props {
+  items: { q: string; a: string | string[] }[];
+  narrow?: boolean;
+  openFirst?: boolean;
+}
+const { items, narrow = false, openFirst = false } = Astro.props;
+---
+
+<div class:list={['faq', narrow && 'faq--narrow']}>
+  {
+    items.map((item, i) => (
+      <details open={openFirst && i === 0}>
+        <summary>
+          <h3>{item.q}</h3>
+        </summary>
+        {(Array.isArray(item.a) ? item.a : [item.a]).map((p) => (
+          <p>{p}</p>
+        ))}
+      </details>
+    ))
+  }
+</div>

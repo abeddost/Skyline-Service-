@@ -1,0 +1,50 @@
+---
+// Before/after comparison.
+// - Drag anywhere on the picture (mouse or finger) to move the divider.
+// - Tap "Vorher" or "Nachher" to see one picture completely.
+// - The hidden range input makes it usable with the keyboard and with screen
+//   readers (arrow keys).
+// The behaviour is in scripts/site.ts.
+import { Image } from 'astro:assets';
+import { sliderPair } from '../lib/images';
+import { flags } from '../config';
+
+interface Props {
+  pair: string;
+  alt: string;
+  /** Rendered width hint for the browser, e.g. a third of the page on desktop. */
+  sizes?: string;
+}
+const { pair, alt, sizes = '(min-width: 960px) 660px, 94vw' } = Astro.props;
+const { before, after } = sliderPair(pair);
+const widths = [480, 800, 1200];
+---
+
+<figure class="ba" data-ba>
+  <div class="ba__stage" data-ba-stage>
+    <Image src={after} alt={`${alt} – nachher`} widths={widths} sizes={sizes} format="webp" quality={72} loading="lazy" />
+    <Image
+      class="ba__before"
+      src={before}
+      alt={`${alt} – vorher`}
+      widths={widths}
+      sizes={sizes}
+      format="webp"
+      quality={72}
+      loading="lazy"
+    />
+    <button class="ba__label ba__label--before" type="button" data-ba-set="100" aria-label="Nur das Vorher-Bild zeigen">Vorher</button>
+    <button class="ba__label ba__label--after" type="button" data-ba-set="0" aria-label="Nur das Nachher-Bild zeigen">Nachher</button>
+    <input class="ba__range" type="range" min="0" max="100" value="50" aria-label="Vorher-Nachher-Vergleich verschieben" />
+    <span class="ba__handle" aria-hidden="true">
+      <span class="ba__knob">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 7l-5 5 5 5"></path>
+          <path d="M15 7l5 5-5 5"></path>
+        </svg>
+      </span>
+    </span>
+    {flags.beforeAfterIsSymbolic && <span class="ba__symbol">Symbolbild</span>}
+  </div>
+  <slot />
+</figure>

@@ -1,0 +1,31 @@
+---
+import Icon from './Icon.astro';
+import { business, whatsappLink } from '../config';
+interface Props {
+  title?: string;
+  text?: string;
+}
+const {
+  title = 'Sie rufen an – wir machen den Rest.',
+  text = 'Schreiben Sie uns per WhatsApp, rufen Sie an oder stellen Sie Ihre Anfrage in einer Minute zusammen.',
+} = Astro.props;
+---
+
+<section class="section cta-band">
+  <div class="container" data-reveal>
+    <p class="eyebrow">Jetzt unverbindlich anfragen</p>
+    <h2>{title}</h2>
+    <p>{text}</p>
+    <div class="btn-row">
+      <a class="btn btn--gold" href="/angebot">Angebot anfragen</a>
+      <a class="btn btn--wa" href={whatsappLink()} target="_blank" rel="noopener" data-track="click_whatsapp">
+        <Icon name="whatsapp" size={18} />
+        WhatsApp
+      </a>
+      <a class="btn btn--outline" href={business.phoneHref} data-track="click_call">
+        <Icon name="phone" size={18} />
+        {business.phoneDisplay}
+      </a>
+    </div>
+  </div>
+</section>

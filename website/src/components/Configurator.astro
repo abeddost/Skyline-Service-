@@ -1,0 +1,350 @@
+---
+// Angebots-Konfigurator: three steps, saved in the browser while typing.
+// Nothing is sent to a server. The finished request opens WhatsApp with the
+// summary prefilled (scripts/configurator.ts).
+import Icon from './Icon.astro';
+import { business } from '../config';
+import { services } from '../data/services';
+
+interface Props {
+  preselect?: string;
+}
+const { preselect = '' } = Astro.props;
+
+// Which detail block each service opens in step 2.
+const groupOf: Record<string, string> = {
+  gebaeude: 'reinigung',
+  buero: 'reinigung',
+  sonder: 'reinigung',
+  treppenhaus: 'treppenhaus',
+  umzug: 'umzug',
+  entruempelung: 'entruempelung',
+};
+const yesNo = ['Ja', 'Nein'];
+---
+
+<div class="card cfg" data-cfg data-preselect={preselect} data-wa={business.whatsappNumber}>
+  <div class="cfg__progress" aria-hidden="true"><div class="cfg__bar" data-cfg-bar></div></div>
+  <p class="cfg__stepinfo" data-cfg-info aria-live="polite">Schritt 1 von 3</p>
+
+  <form novalidate data-cfg-form>
+    <!-- Step 1 -->
+    <div class="cfg__step" data-step="0">
+      <h3 tabindex="-1">Was dürfen wir für Sie tun?</h3>
+      <p class="cfg__hint">Sie können mehrere Leistungen auswählen.</p>
+      <div class="cfg__services" role="group" aria-label="Leistungen">
+        {
+          services.map((s) => (
+            <label class="cfg__service">
+              <input type="checkbox" name="leistung" value={s.name} data-key={s.key} data-group={groupOf[s.key]} />
+              <span>
+                <Icon name={s.icon} size={28} />
+                {s.name}
+              </span>
+            </label>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="cfg__step" data-step="1" hidden>
+      <h3 tabindex="-1">Ein paar Details</h3>
+      <p class="cfg__hint">Alle Angaben sind freiwillig. Je mehr wir wissen, desto genauer wird Ihr Angebot.</p>
+
+      <fieldset class="cfg__group" data-group="reinigung" data-title="Reinigung" hidden>
+        <legend>Reinigung</legend>
+        <div class="fields">
+          <div class="field">
+            <label for="cfg-r-objekt">Objektart</label>
+            <select id="cfg-r-objekt" name="r_objekt" data-label="Objektart">
+              <option value="">Bitte wählen</option>
+              {['Büro', 'Praxis', 'Wohnung', 'Haus', 'Gewerbe'].map((o) => <option>{o}</option>)}
+            </select>
+          </div>
+          <div class="field">
+            <label for="cfg-r-flaeche">Fläche in m²</label>
+            <div class="field__row">
+              <input type="range" min="20" max="2000" step="10" value="100" aria-label="Fläche in Quadratmetern" data-range-for="cfg-r-flaeche" />
+              <input type="number" id="cfg-r-flaeche" name="r_flaeche" min="20" max="2000" inputmode="numeric" data-label="Fläche" data-unit=" m²" />
+            </div>
+          </div>
+          <div class="field field--full">
+            <span class="label" id="cfg-r-h">Häufigkeit</span>
+            <div class="radios" role="radiogroup" aria-labelledby="cfg-r-h">
+              {
+                ['Einmalig', 'Wöchentlich', '2× pro Woche', 'Täglich', 'Monatlich'].map((o) => (
+                  <label>
+                    <input type="radio" name="r_haeufigkeit" value={o} data-label="Häufigkeit" />
+                    {o}
+                  </label>
+                ))
+              }
+            </div>
+          </div>
+          <div class="field">
+            <span class="label" id="cfg-r-g">Grundreinigung gewünscht?</span>
+            <div class="radios" role="radiogroup" aria-labelledby="cfg-r-g">
+              {
+                yesNo.map((o) => (
+                  <label>
+                    <input type="radio" name="r_grund" value={o} data-label="Grundreinigung" />
+                    {o}
+                  </label>
+                ))
+              }
+            </div>
+          </div>
+          <div class="field">
+            <label for="cfg-r-termin">Wunschtermin</label>
+            <input type="date" id="cfg-r-termin" name="r_termin" data-label="Wunschtermin" />
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="cfg__group" data-group="treppenhaus" data-title="Treppenhausreinigung" hidden>
+        <legend>Treppenhaus</legend>
+        <div class="fields">
+          <div class="field">
+            <label for="cfg-t-etagen">Etagen</label>
+            <input type="number" id="cfg-t-etagen" name="t_etagen" min="1" max="40" inputmode="numeric" data-label="Etagen" />
+          </div>
+          <div class="field">
+            <label for="cfg-t-parteien">Anzahl Parteien</label>
+            <input type="number" id="cfg-t-parteien" name="t_parteien" min="1" max="200" inputmode="numeric" data-label="Parteien" />
+          </div>
+          <div class="field">
+            <span class="label" id="cfg-t-a">Aufzug vorhanden?</span>
+            <div class="radios" role="radiogroup" aria-labelledby="cfg-t-a">
+              {
+                yesNo.map((o) => (
+                  <label>
+                    <input type="radio" name="t_aufzug" value={o} data-label="Aufzug" />
+                    {o}
+                  </label>
+                ))
+              }
+            </div>
+          </div>
+          <div class="field">
+            <label for="cfg-t-h">Häufigkeit</label>
+            <select id="cfg-t-h" name="t_haeufigkeit" data-label="Häufigkeit">
+              <option value="">Bitte wählen</option>
+              {['Wöchentlich', 'Alle 2 Wochen', 'Monatlich', 'Einmalig'].map((o) => <option>{o}</option>)}
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="cfg__group" data-group="umzug" data-title="Umzug" hidden>
+        <legend>Umzug</legend>
+        <div class="fields">
+          <div class="field">
+            <label for="cfg-u-von">PLZ Auszug</label>
+            <input type="text" id="cfg-u-von" name="u_von" inputmode="numeric" maxlength="5" autocomplete="off" data-plz data-label="PLZ Auszug" />
+            <span class="field__error" aria-live="polite"></span>
+          </div>
+          <div class="field">
+            <label for="cfg-u-nach">PLZ Einzug</label>
+            <input type="text" id="cfg-u-nach" name="u_nach" inputmode="numeric" maxlength="5" autocomplete="off" data-plz data-label="PLZ Einzug" />
+            <span class="field__error" aria-live="polite"></span>
+          </div>
+          <div class="field field--full">
+            <label for="cfg-u-groesse">Zimmer oder Wohnfläche</label>
+            <input type="text" id="cfg-u-groesse" name="u_groesse" placeholder="z. B. 3 Zimmer, 75 m²" data-label="Größe" />
+          </div>
+          <div class="field">
+            <label for="cfg-u-etage1">Etage Auszug</label>
+            <input type="text" id="cfg-u-etage1" name="u_etage_von" placeholder="z. B. 3. OG" data-label="Etage Auszug" />
+          </div>
+          <div class="field">
+            <span class="label" id="cfg-u-a1">Aufzug beim Auszug?</span>
+            <div class="radios" role="radiogroup" aria-labelledby="cfg-u-a1">
+              {
+                yesNo.map((o) => (
+                  <label>
+                    <input type="radio" name="u_aufzug_von" value={o} data-label="Aufzug Auszug" />
+                    {o}
+                  </label>
+                ))
+              }
+            </div>
+          </div>
+          <div class="field">
+            <label for="cfg-u-etage2">Etage Einzug</label>
+            <input type="text" id="cfg-u-etage2" name="u_etage_nach" placeholder="z. B. EG" data-label="Etage Einzug" />
+          </div>
+          <div class="field">
+            <span class="label" id="cfg-u-a2">Aufzug beim Einzug?</span>
+            <div class="radios" role="radiogroup" aria-labelledby="cfg-u-a2">
+              {
+                yesNo.map((o) => (
+                  <label>
+                    <input type="radio" name="u_aufzug_nach" value={o} data-label="Aufzug Einzug" />
+                    {o}
+                  </label>
+                ))
+              }
+            </div>
+          </div>
+          <div class="field">
+            <span class="label" id="cfg-u-m">Möbelmontage gewünscht?</span>
+            <div class="radios" role="radiogroup" aria-labelledby="cfg-u-m">
+              {
+                yesNo.map((o) => (
+                  <label>
+                    <input type="radio" name="u_montage" value={o} data-label="Möbelmontage" />
+                    {o}
+                  </label>
+                ))
+              }
+            </div>
+          </div>
+          <div class="field">
+            <span class="label" id="cfg-u-h">Halteverbotszone nötig?</span>
+            <div class="radios" role="radiogroup" aria-labelledby="cfg-u-h">
+              {
+                ['Ja', 'Nein', 'Weiß nicht'].map((o) => (
+                  <label>
+                    <input type="radio" name="u_halteverbot" value={o} data-label="Halteverbotszone" />
+                    {o}
+                  </label>
+                ))
+              }
+            </div>
+          </div>
+          <div class="field">
+            <label for="cfg-u-datum">Wunschdatum</label>
+            <input type="date" id="cfg-u-datum" name="u_datum" data-label="Wunschdatum" />
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="cfg__group" data-group="entruempelung" data-title="Entrümpelung" hidden>
+        <legend>Entrümpelung</legend>
+        <div class="fields">
+          <div class="field">
+            <label for="cfg-e-objekt">Objekt</label>
+            <select id="cfg-e-objekt" name="e_objekt" data-label="Objekt">
+              <option value="">Bitte wählen</option>
+              {['Wohnung', 'Keller', 'Dachboden', 'Haus', 'Gewerbe'].map((o) => <option>{o}</option>)}
+            </select>
+          </div>
+          <div class="field">
+            <label for="cfg-e-groesse">Räume oder m²</label>
+            <input type="text" id="cfg-e-groesse" name="e_groesse" placeholder="z. B. 2 Räume, 30 m²" data-label="Umfang" />
+          </div>
+          <div class="field field--full">
+            <span class="label" id="cfg-e-f">Wie voll ist es?</span>
+            <div class="radios" role="radiogroup" aria-labelledby="cfg-e-f">
+              {
+                ['Leicht', 'Mittel', 'Voll'].map((o) => (
+                  <label>
+                    <input type="radio" name="e_fuellgrad" value={o} data-label="Füllgrad" />
+                    {o}
+                  </label>
+                ))
+              }
+            </div>
+          </div>
+          <div class="field">
+            <label for="cfg-e-etage">Etage</label>
+            <input type="text" id="cfg-e-etage" name="e_etage" placeholder="z. B. Keller, 4. OG" data-label="Etage" />
+          </div>
+          <div class="field">
+            <span class="label" id="cfg-e-a">Aufzug vorhanden?</span>
+            <div class="radios" role="radiogroup" aria-labelledby="cfg-e-a">
+              {
+                yesNo.map((o) => (
+                  <label>
+                    <input type="radio" name="e_aufzug" value={o} data-label="Aufzug" />
+                    {o}
+                  </label>
+                ))
+              }
+            </div>
+          </div>
+          <p class="cfg__hint field--full">
+            Tipp: Fotos helfen uns am meisten. Sie können sie nach dem Absenden direkt im WhatsApp-Chat anhängen.
+          </p>
+        </div>
+      </fieldset>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="cfg__step" data-step="2" hidden>
+      <h3 tabindex="-1">Wie erreichen wir Sie?</h3>
+      <p class="cfg__hint">Ihre Anfrage wird im nächsten Schritt in WhatsApp geöffnet. Dort senden Sie sie mit einem Tipp ab.</p>
+      <fieldset class="cfg__group" data-group="kontakt" data-title="Kontakt">
+        <legend>Kontakt</legend>
+        <div class="fields">
+          <div class="field">
+            <label for="cfg-name">Name *</label>
+            <input type="text" id="cfg-name" name="name" autocomplete="name" required data-label="Name" />
+            <span class="field__error" aria-live="polite"></span>
+          </div>
+          <div class="field">
+            <label for="cfg-plz">PLZ *</label>
+            <input type="text" id="cfg-plz" name="plz" inputmode="numeric" maxlength="5" autocomplete="postal-code" required data-plz data-label="PLZ" />
+            <span class="field__error" aria-live="polite"></span>
+          </div>
+          <div class="field">
+            <label for="cfg-tel">Telefon (für Rückruf)</label>
+            <input type="tel" id="cfg-tel" name="telefon" autocomplete="tel" data-phone data-label="Telefon" />
+            <span class="field__error" aria-live="polite"></span>
+          </div>
+          <div class="field">
+            <label for="cfg-mail">E-Mail (optional)</label>
+            <input type="email" id="cfg-mail" name="email" autocomplete="email" data-label="E-Mail" />
+            <span class="field__error" aria-live="polite"></span>
+          </div>
+          <div class="field field--full">
+            <span class="label" id="cfg-k">Bevorzugter Kontakt</span>
+            <div class="radios" role="radiogroup" aria-labelledby="cfg-k">
+              {
+                ['WhatsApp', 'Anruf', 'E-Mail'].map((o, i) => (
+                  <label>
+                    <input type="radio" name="kontaktweg" value={o} checked={i === 0} data-label="Bevorzugter Kontakt" />
+                    {o}
+                  </label>
+                ))
+              }
+            </div>
+          </div>
+          <div class="field field--full">
+            <label for="cfg-nachricht">Nachricht (optional)</label>
+            <textarea id="cfg-nachricht" name="nachricht" data-label="Nachricht"></textarea>
+          </div>
+          <div class="field field--full">
+            <label class="check">
+              <input type="checkbox" name="datenschutz" required data-consent />
+              <span>
+                Ich habe die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> gelesen und bin einverstanden, dass
+                meine Angaben zur Bearbeitung meiner Anfrage per WhatsApp an Skyline Service übermittelt werden. *
+              </span>
+            </label>
+            <span class="field__error" aria-live="polite" data-consent-error></span>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+    <p class="cfg__msg" role="alert" data-cfg-msg></p>
+
+    <div class="cfg__nav">
+      <button type="button" class="btn btn--outline" data-cfg-back hidden>Zurück</button>
+      <button type="button" class="btn btn--gold" data-cfg-next>Weiter</button>
+      <button type="submit" class="btn btn--wa" data-cfg-send hidden>
+        <Icon name="whatsapp" size={18} class="icon--white" />
+        Per WhatsApp senden
+      </button>
+    </div>
+  </form>
+
+  <noscript>
+    <p>
+      Der Konfigurator benötigt JavaScript. Sie erreichen uns auch direkt unter
+      <a href={business.phoneHref}>{business.phoneDisplay}</a>.
+    </p>
+  </noscript>
+</div>

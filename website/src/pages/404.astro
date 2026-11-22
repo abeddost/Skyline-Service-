@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import ServiceGrid from '../components/ServiceGrid.astro';
+import { business, whatsappLink } from '../config';
+---
+
+<Base
+  title="Seite nicht gefunden | Skyline Service Frankfurt"
+  description="Diese Seite gibt es nicht. Hier finden Sie unsere Leistungen in Frankfurt und den direkten Kontakt zu Skyline Service."
+  noindex
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow">Fehler 404</p>
+      <h1>Diese Seite gibt es nicht</h1>
+      <div class="page-hero__intro">
+        <p>Vielleicht hat sich die Adresse geändert. Hier kommen Sie direkt weiter:</p>
+      </div>
+      <div class="btn-row hero__actions">
+        <a class="btn btn--gold" href="/">Zur Startseite</a>
+        <a class="btn btn--outline" href={business.phoneHref} data-track="click_call">
+          <Icon name="phone" size={18} />
+          {business.phoneDisplay}
+        </a>
+        <a class="btn btn--wa" href={whatsappLink()} target="_blank" rel="noopener" data-track="click_whatsapp">WhatsApp</a>
+      </div>
+    </div>
+  </section>
+  <section class="section section--flush">
+    <div class="container">
+      <h2>Unsere Leistungen</h2>
+      <ServiceGrid />
+    </div>
+  </section>
+</Base>

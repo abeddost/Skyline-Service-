@@ -1,0 +1,52 @@
+---
+import Logo from './Logo.astro';
+import { business, whatsappLink, mailLink } from '../config';
+import { services } from '../data/services';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <Logo id="logo-footer" tagline />
+        <address>
+          {business.legalName}<br />
+          {business.street}<br />
+          {`${business.postalCode} ${business.city}`}<br />
+          Telefon: <a href={business.phoneHref} data-track="click_call">{business.phoneDisplay}</a><br />
+          WhatsApp: <a href={whatsappLink()} target="_blank" rel="noopener" data-track="click_whatsapp">Nachricht schreiben</a
+          ><br />
+          E-Mail: <a href={mailLink}>{business.email}</a>
+        </address>
+      </div>
+      <div>
+        <h2>Leistungen</h2>
+        <ul>
+          {
+            services.map((s) => (
+              <li>
+                <a href={`/${s.slug}`}>{s.name} Frankfurt</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <h2>Unternehmen</h2>
+        <ul>
+          <li><a href="/angebot">Angebot anfragen</a></li>
+          <li><a href="/einsatzgebiet">Einsatzgebiet</a></li>
+          <li><a href="/ueber-uns">Über uns</a></li>
+          <li><a href="/kontakt">Kontakt</a></li>
+          <li><a href="/impressum">Impressum</a></li>
+          <li><a href="/datenschutz">Datenschutz</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© {year} {business.legalName}</span>
+      <span>{business.claim}</span>
+    </div>
+  </div>
+</footer>

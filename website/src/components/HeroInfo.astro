@@ -1,0 +1,30 @@
+---
+// Three facts in a bar under the hero text (desktop only; phones have the
+// fixed action bar instead).
+import Icon from './Icon.astro';
+import { business } from '../config';
+---
+
+<ul class="hero-info">
+  <li>
+    <Icon name="pin" size={22} />
+    <div>
+      <small>Einsatzgebiet</small>
+      <span>Frankfurt &amp; Umgebung</span>
+    </div>
+  </li>
+  <li>
+    <Icon name="shield" size={22} />
+    <div>
+      <small>Angebot</small>
+      <span>Festpreis, unverbindlich</span>
+    </div>
+  </li>
+  <li>
+    <Icon name="phone" size={22} />
+    <div>
+      <small>Telefon &amp; WhatsApp</small>
+      <a href={business.phoneHref} data-track="click_call">{business.phoneDisplay}</a>
+    </div>
+  </li>
+</ul>

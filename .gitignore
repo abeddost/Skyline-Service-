@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Working material that stays on this computer (large raw files, old versions,
+# previews). Remove a line here to add that folder to the repository.
+/skyline-assets/
+/skyline-assets 2/
+/_archive/
+/One-continuous-cinematic-drone-shot-with*.mp4
+/farbvorschlaege.png
+/skyline-higgsfield-generation-prompts.md
+/skyline-higgsfield-visual-prompts.pdf
+/skyline-website-prompt.pdf

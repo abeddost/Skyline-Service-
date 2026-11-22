@@ -1,0 +1,61 @@
+---
+// Stylised map of Frankfurt: the Main as a blue line and the districts as
+// points. Positions are approximate and decorative, not to scale.
+const major = ['Höchst', 'Bockenheim', 'Innenstadt', 'Nordend', 'Sachsenhausen', 'Fechenheim', 'Eschersheim'];
+const districts = [
+  { n: 'Höchst', x: 92, y: 212 },
+  { n: 'Griesheim', x: 196, y: 236 },
+  { n: 'Rödelheim', x: 238, y: 128 },
+  { n: 'Gallus', x: 304, y: 226 },
+  { n: 'Bockenheim', x: 322, y: 164 },
+  { n: 'Westend', x: 384, y: 190 },
+  { n: 'Eschersheim', x: 402, y: 82 },
+  { n: 'Innenstadt', x: 436, y: 228 },
+  { n: 'Nordend', x: 458, y: 150 },
+  { n: 'Bornheim', x: 528, y: 164 },
+  { n: 'Ostend', x: 548, y: 226 },
+  { n: 'Bergen-Enkheim', x: 664, y: 112 },
+  { n: 'Fechenheim', x: 684, y: 214 },
+  { n: 'Schwanheim', x: 172, y: 318 },
+  { n: 'Niederrad', x: 326, y: 322 },
+  { n: 'Sachsenhausen', x: 452, y: 318 },
+  { n: 'Oberrad', x: 584, y: 318 },
+];
+---
+
+<svg class="area-map" viewBox="0 0 800 410" role="img" aria-labelledby="area-map-title">
+  <title id="area-map-title">Stilisierte Karte von Frankfurt am Main mit dem Main und den Stadtteilen</title>
+  <defs>
+    <linearGradient id="map-gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9CC3E0"></stop>
+      <stop offset=".5" stop-color="#5E9CC9"></stop>
+      <stop offset="1" stop-color="#9CC3E0"></stop>
+    </linearGradient>
+    <radialGradient id="map-glow" cx="50%" cy="52%" r="50%">
+      <stop offset="0" style="stop-color:var(--accent)" stop-opacity=".16"></stop>
+      <stop offset="1" style="stop-color:var(--accent)" stop-opacity="0"></stop>
+    </radialGradient>
+  </defs>
+  <ellipse cx="400" cy="205" rx="390" ry="190" fill="url(#map-glow)"></ellipse>
+  <ellipse cx="400" cy="205" rx="372" ry="176" fill="none" style="stroke:var(--accent)" stroke-opacity=".45" stroke-dasharray="3 9"
+  ></ellipse>
+  <path
+    d="M20 262c60 4 96-6 150-2s88 22 150 16 86-22 140-20 82 20 140 14 110-34 180-30"
+    fill="none"
+    stroke="url(#map-gold)"
+    stroke-width="7"
+    stroke-linecap="round"></path>
+  <text x="62" y="292" font-style="italic" fill-opacity=".7">Main</text>
+  {
+    districts.map((d) => (
+      <g class={major.includes(d.n) ? undefined : 'is-minor'}>
+        <circle cx={d.x} cy={d.y} r="5" style="fill:var(--accent)" />
+        <circle cx={d.x} cy={d.y} r="10" fill="none" style="stroke:var(--accent)" stroke-opacity=".35" />
+        <text x={d.x} y={d.y - 14} text-anchor="middle">
+          {d.n}
+        </text>
+      </g>
+    ))
+  }
+  <text class="area-map__city" x="400" y="384" text-anchor="middle">Frankfurt am Main</text>
+</svg>

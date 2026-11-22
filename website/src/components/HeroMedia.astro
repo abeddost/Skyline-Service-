@@ -1,0 +1,79 @@
+---
+// Hero background that follows the scroll position: the picture moves from
+// "before" to "after" (dirty to clean, full to empty) while the visitor scrolls.
+//
+// Built so it never slows the page down:
+// - The first paint is one small still image (the first frame).
+// - The frames are plain image files in public/assets/hero/<key>-desktop and
+//   <key>-mobile. scripts/hero-scroll.ts fetches them after the page has
+//   loaded, a rough set first and the rest afterwards, and draws them on the
+//   canvas. Phones in portrait get the 9:16 set, everything else the 16:9 set.
+// - With reduced motion, data saver, a very slow connection or no JavaScript
+//   there is no scrubbing: visitors get a normal hero with the finished
+//   "after" picture.
+//
+// New frame sets are made with scripts/make-hero-frames.mjs.
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+
+interface Props {
+  video: string;
+  alt: string;
+}
+const { video, alt } = Astro.props;
+
+// Must match the number of files written by scripts/make-hero-frames.mjs.
+const FRAMES = 61;
+
+const stills = import.meta.glob<{ default: ImageMetadata }>('../assets/hero/*-{desktop,mobile}-{start,end}.jpg', {
+  eager: true,
+});
+const still = (name: string) => {
+  const hit = stills[`../assets/hero/${video}-${name}.jpg`];
+  if (!hit) throw new Error(`Unknown hero still: ${video}-${name}`);
+  return hit.default;
+};
+const webp = (name: string, width: number) =>
+  getImage({ src: still(name), width, format: 'webp', quality: name.startsWith('mobile') ? 62 : 66 });
+
+const [dStart, dStartSm, dEnd, mStart, mEnd] = await Promise.all([
+  webp('desktop-start', 1280),
+  webp('desktop-start', 960),
+  webp('desktop-end', 1280),
+  webp('mobile-start', 720),
+  webp('mobile-end', 720),
+]);
+const portrait = '(orientation: portrait) and (max-width: 899px)';
+---
+
+<div
+  class="hero-media"
+  data-hero-frames={FRAMES}
+  data-desktop={`/assets/hero/${video}-desktop/`}
+  data-mobile={`/assets/hero/${video}-mobile/`}
+  data-end-desktop={dEnd.src}
+  data-end-mobile={mEnd.src}
+>
+  <picture>
+    <source media={`(prefers-reduced-motion: reduce) and ${portrait}`} srcset={mEnd.src} type="image/webp" />
+    <source media="(prefers-reduced-motion: reduce)" srcset={dEnd.src} type="image/webp" />
+    <source media={portrait} srcset={mStart.src} type="image/webp" />
+    <img
+      src={dStart.src}
+      srcset={`${dStartSm.src} 960w, ${dStart.src} 1280w`}
+      sizes="100vw"
+      width="1280"
+      height="720"
+      alt={alt}
+      fetchpriority="high"
+      decoding="async"
+    />
+  </picture>
+  <canvas aria-hidden="true"></canvas>
+  <noscript>
+    <picture>
+      <source media={portrait} srcset={mEnd.src} type="image/webp" />
+      <img src={dEnd.src} alt="" width="1280" height="720" loading="lazy" decoding="async" />
+    </picture>
+  </noscript>
+</div>

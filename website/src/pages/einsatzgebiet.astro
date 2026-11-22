@@ -1,0 +1,118 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import AreaMap from '../components/AreaMap.astro';
+import ServiceGrid from '../components/ServiceGrid.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { whatsappLink } from '../config';
+
+const crumbs = [
+  { name: 'Startseite', href: '/' },
+  { name: 'Einsatzgebiet', href: '/einsatzgebiet' },
+];
+const districts = [
+  'Altstadt',
+  'Innenstadt',
+  'Bahnhofsviertel',
+  'Westend',
+  'Nordend',
+  'Ostend',
+  'Bornheim',
+  'Bockenheim',
+  'Sachsenhausen',
+  'Oberrad',
+  'Niederrad',
+  'Gallus',
+  'Gutleutviertel',
+  'Griesheim',
+  'Rödelheim',
+  'Hausen',
+  'Praunheim',
+  'Heddernheim',
+  'Niederursel',
+  'Ginnheim',
+  'Dornbusch',
+  'Eschersheim',
+  'Eckenheim',
+  'Preungesheim',
+  'Bonames',
+  'Seckbach',
+  'Riederwald',
+  'Fechenheim',
+  'Bergen-Enkheim',
+  'Höchst',
+  'Nied',
+  'Sindlingen',
+  'Zeilsheim',
+  'Unterliederbach',
+  'Sossenheim',
+  'Schwanheim',
+  'Kalbach-Riedberg',
+  'Harheim',
+  'Nieder-Eschbach',
+  'Nieder-Erlenbach',
+];
+---
+
+<Base
+  title="Einsatzgebiet Frankfurt & Rhein-Main | Skyline Service"
+  description="Skyline Service ist in allen Stadtteilen von Frankfurt am Main und in der Umgebung im Einsatz: Reinigung, Umzug und Entrümpelung. Jetzt anfragen."
+  crumbs={crumbs}
+>
+  <PageHero title="Unser Einsatzgebiet" eyebrow="Frankfurt & Umgebung" crumbs={crumbs} ctaHref="/angebot">
+    <p>
+      Wir arbeiten für Privat- und Gewerbekunden in ganz Frankfurt am Main und in der Umgebung. Unser Sitz ist im Frankfurter Süden,
+      die Wege in die Stadtteile sind kurz.
+    </p>
+  </PageHero>
+
+  <section class="section section--flush">
+    <div class="container">
+      <AreaMap />
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Stadtteile</p>
+        <h2>In diesen Frankfurter Stadtteilen sind wir unterwegs</h2>
+        <p>
+          Ob Altbau im Nordend, Bürohaus im Westend oder Reihenhaus in Bergen-Enkheim: Wir kommen zu Ihnen, sehen uns das Objekt an
+          und erstellen ein Angebot.
+        </p>
+      </div>
+      <ul class="chips">
+        {districts.map((d) => <li class="chip">{d}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Umgebung</p>
+        <h2>Auch außerhalb von Frankfurt</h2>
+        <p>
+          Sie wohnen oder arbeiten in der Umgebung von Frankfurt? Fragen Sie einfach kurz nach, ob wir zu Ihnen kommen. Eine Nachricht
+          mit Ihrer Postleitzahl genügt.
+        </p>
+        <a class="btn btn--wa" href={whatsappLink('Hallo Skyline Service, kommen Sie auch zu mir? Meine Postleitzahl ist: ')} target="_blank" rel="noopener" data-track="click_whatsapp">
+          Per WhatsApp nachfragen
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Leistungen</p>
+        <h2>Das bieten wir in Frankfurt an</h2>
+      </div>
+      <ServiceGrid />
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>

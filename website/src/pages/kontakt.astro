@@ -1,0 +1,67 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { business, whatsappLink, mailLink } from '../config';
+
+const crumbs = [
+  { name: 'Startseite', href: '/' },
+  { name: 'Kontakt', href: '/kontakt' },
+];
+---
+
+<Base
+  title="Kontakt – Skyline Service Frankfurt am Main"
+  description="Skyline Service in Frankfurt erreichen: per WhatsApp, Telefon 0176 80012487 oder E-Mail. Schreiben Sie uns und fragen Sie unverbindlich an."
+  crumbs={crumbs}
+>
+  <PageHero title="Kontakt" eyebrow="Wir sind für Sie da" crumbs={crumbs} cta={false}>
+    <p>Am schnellsten geht es per WhatsApp. Sie können uns auch anrufen oder eine E-Mail schreiben.</p>
+  </PageHero>
+
+  <section class="section section--flush">
+    <div class="container">
+      <div class="grid grid--3">
+        <div class="card contact-card">
+          <Icon name="whatsapp" size={26} ring />
+          <h2 class="h3">WhatsApp</h2>
+          <p>Für Anfragen, Fotos und kurze Rückfragen. Der Chat öffnet sich mit einer vorbereiteten Nachricht.</p>
+          <a class="btn btn--wa" href={whatsappLink()} target="_blank" rel="noopener" data-track="click_whatsapp">
+            <Icon name="whatsapp" size={18} />
+            Chat öffnen
+          </a>
+        </div>
+        <div class="card contact-card">
+          <Icon name="phone" size={26} ring />
+          <h2 class="h3">Telefon</h2>
+          <p class="contact-card__value">{business.phoneDisplay}</p>
+          <p>Sprechen Sie direkt mit uns über Ihr Anliegen.</p>
+          <a class="btn btn--outline" href={business.phoneHref} data-track="click_call">Jetzt anrufen</a>
+        </div>
+        <div class="card contact-card">
+          <Icon name="mail" size={26} ring />
+          <h2 class="h3">E-Mail</h2>
+          <p class="contact-card__value">{business.email}</p>
+          <p>Für ausführliche Anfragen und Unterlagen.</p>
+          <a class="btn btn--outline" href={mailLink}>E-Mail schreiben</a>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:24px">
+        <h2 class="h3">Anschrift</h2>
+        <address style="font-style:normal;line-height:1.8">
+          {business.legalName}<br />
+          {business.street}<br />
+          {`${business.postalCode} ${business.city}`}
+        </address>
+        <p class="note">
+          Bitte kommen Sie nicht ohne Termin vorbei. Wir sind meist bei unseren Kunden im Einsatz und kommen für eine Besichtigung zu
+          Ihnen.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand title="Oder stellen Sie Ihre Anfrage zusammen" text="Im Konfigurator wählen Sie Leistung und Details und senden alles gesammelt per WhatsApp." />
+</Base>

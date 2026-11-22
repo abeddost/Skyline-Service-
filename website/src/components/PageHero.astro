@@ -1,0 +1,135 @@
+---
+// Hero for inner pages. Three looks, chosen by what is passed in:
+// - video: full screen, pinned, the picture follows the scroll position
+//          ("before" to "after"), like the homepage hero
+// - image: full screen with a photo
+// - neither: a compact dark band, so the page content starts right below
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Icon from './Icon.astro';
+import HeroMedia from './HeroMedia.astro';
+import HeroInfo from './HeroInfo.astro';
+import { business } from '../config';
+
+interface Props {
+  title: string;
+  eyebrow?: string;
+  crumbs?: { name: string; href: string }[];
+  image?: ImageMetadata;
+  video?: string;
+  mediaAlt?: string;
+  info?: boolean;
+  cta?: boolean;
+  ctaHref?: string;
+  ctaLabel?: string;
+}
+const {
+  title,
+  eyebrow,
+  crumbs = [],
+  image,
+  video,
+  mediaAlt = '',
+  info = false,
+  cta = true,
+  ctaHref = '#angebot',
+  ctaLabel = 'Unverbindliches Angebot',
+} = Astro.props;
+const scroll = Boolean(video);
+const photo = !video && Boolean(image);
+---
+
+{
+  scroll ? (
+    <section class="page-hero hero-scroll" data-hero-scroll>
+      <div class="hero__sticky">
+        <HeroMedia video={video!} alt={mediaAlt} />
+        <div class="container">
+          <div class="hero__content">
+            <nav aria-label="Brotkrumen">
+              <ol class="crumbs">
+                {crumbs.map((c, i) => (
+                  <li>{i < crumbs.length - 1 ? <a href={c.href}>{c.name}</a> : <span aria-current="page">{c.name}</span>}</li>
+                ))}
+              </ol>
+            </nav>
+            {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+            <h1>{title}</h1>
+            {Astro.slots.has('default') && (
+              <div class="page-hero__intro">
+                <slot />
+              </div>
+            )}
+            {cta && (
+              <div class="btn-row hero__actions">
+                <a class="btn btn--gold" href={ctaHref}>
+                  {ctaLabel}
+                </a>
+                <a class="btn btn--outline" href={business.phoneHref} data-track="click_call">
+                  <Icon name="phone" size={18} />
+                  {business.phoneDisplay} anrufen
+                </a>
+              </div>
+            )}
+            {info && <HeroInfo />}
+          </div>
+        </div>
+        <p class="hero__hint" aria-hidden="true">
+          Scrollen
+        </p>
+        <div class="hero__progress" aria-hidden="true">
+          <span />
+        </div>
+      </div>
+    </section>
+  ) : (
+    <section class:list={['page-hero', photo && 'page-hero--media']}>
+      {photo && (
+        <div class="hero-media">
+          <Image
+            src={image!}
+            alt={mediaAlt}
+            widths={[640, 1100, 1700]}
+            sizes="100vw"
+            format="webp"
+            quality={62}
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+      )}
+      <div class="container">
+        <div class="hero__content">
+          {crumbs.length > 0 && (
+            <nav aria-label="Brotkrumen">
+              <ol class="crumbs">
+                {crumbs.map((c, i) => (
+                  <li>{i < crumbs.length - 1 ? <a href={c.href}>{c.name}</a> : <span aria-current="page">{c.name}</span>}</li>
+                ))}
+              </ol>
+            </nav>
+          )}
+          {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+          <h1>{title}</h1>
+          {Astro.slots.has('default') && (
+            <div class="page-hero__intro">
+              <slot />
+            </div>
+          )}
+          {cta && (
+            <div class="btn-row hero__actions">
+              <a class="btn btn--gold" href={ctaHref}>
+                {ctaLabel}
+              </a>
+              <a class="btn btn--outline" href={business.phoneHref} data-track="click_call">
+                <Icon name="phone" size={18} />
+                {business.phoneDisplay} anrufen
+              </a>
+            </div>
+          )}
+          {info && <HeroInfo />}
+        </div>
+      </div>
+    </section>
+  )
+}
