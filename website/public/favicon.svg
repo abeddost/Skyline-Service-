@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
     <linearGradient id="g" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#F6D88A"/><stop offset=".5" stop-color="#D4A843"/><stop offset="1" stop-color="#9C7424"/>
+      <stop offset="0" stop-color="#A9D3FF"/><stop offset=".5" stop-color="#4DA3FF"/><stop offset="1" stop-color="#1F6FD1"/>
     </linearGradient>
     <mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
       <rect width="64" height="64" fill="#fff"/>
@@ -9,7 +9,7 @@
       <path d="M5 53 32 35l27 18v11H5z" fill="#000"/>
     </mask>
   </defs>
-  <rect width="64" height="64" rx="12" fill="#07070A"/>
+  <rect width="64" height="64" rx="12" fill="#0B0C0E"/>
   <g fill="url(#g)" mask="url(#m)">
     <rect x="10" y="30" width="7" height="26" rx="1.2"/>
     <rect x="19.5" y="19" width="7" height="37" rx="1.2"/>

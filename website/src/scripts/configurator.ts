@@ -247,7 +247,7 @@ export function initConfigurator() {
     const url = `https://wa.me/${root.dataset.wa}?text=${encodeURIComponent(summary())}`;
     track('generate_lead', { method: 'whatsapp' });
     window.open(url, '_blank', 'noopener');
-    msg.style.color = 'var(--gold-1)';
+    msg.style.color = 'var(--accent)';
     msg.textContent = 'WhatsApp wurde geöffnet. Bitte senden Sie die Nachricht dort ab. Fotos können Sie direkt im Chat anhängen.';
   });
 

@@ -8,12 +8,12 @@
   --surface-2: #1b1f26;
   /* The accent colour. To change it, edit these six lines (and the three
      colours in the logo files, see README "Accent colour"). */
-  --accent: #e2b340;
-  --accent-rgb: 226 179 64; /* the same colour as three numbers, for see-through tints */
-  --accent-strong: #f1c75a; /* hover */
-  --accent-ink: #15110a; /* text on top of the accent */
-  --accent-light: #f6d88a; /* logo gradient, light end */
-  --accent-dark: #9c7424; /* logo gradient, dark end; also accent text on the light section */
+  --accent: #4da3ff; /* Himmelblau */
+  --accent-rgb: 77 163 255; /* the same colour as three numbers, for see-through tints */
+  --accent-strong: #7dbcff; /* hover */
+  --accent-ink: #06121f; /* text on top of the accent */
+  --accent-light: #a9d3ff; /* logo gradient, light end */
+  --accent-dark: #1f6fd1; /* logo gradient, dark end; also accent text on the light section */
   --accent-soft: rgb(var(--accent-rgb) / 0.12);
   --wa: #25d366;
   --wa-ink: #06210f;
@@ -156,7 +156,7 @@ ol {
 [hidden] {
   display: none !important;
 }
-.gold {
+.accent {
   color: var(--c-accent);
 }
 .muted {
@@ -312,12 +312,12 @@ ol {
 .btn .icon {
   color: inherit;
 }
-.btn--gold {
+.btn--primary {
   background: var(--accent);
   color: var(--accent-ink);
   box-shadow: 0 8px 28px rgb(var(--accent-rgb) / 0.28);
 }
-.btn--gold:hover {
+.btn--primary:hover {
   background: var(--accent-strong);
   color: var(--accent-ink);
   box-shadow: 0 10px 34px rgb(var(--accent-rgb) / 0.4);
@@ -726,7 +726,7 @@ ol {
 .hero__content h1 {
   max-width: 880px;
 }
-.hero__content h1 .gold {
+.hero__content h1 .accent {
   color: var(--accent);
 }
 .hero__sub,
