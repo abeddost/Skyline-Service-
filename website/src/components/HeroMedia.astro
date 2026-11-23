@@ -25,6 +25,12 @@ const { video, alt } = Astro.props;
 // Must match the number of files written by scripts/make-hero-frames.mjs.
 const FRAMES = 61;
 
+// Clips whose 9:16 version shows the scene in the middle of the frame, with
+// plain ceiling above and floor below. On phones in portrait they get their own
+// area above the hero text instead of sitting behind it (see .hero-media--band
+// in global.css), so the before/after is not hidden by the text.
+const BAND_MOBILE = new Set(['buero']);
+
 const stills = import.meta.glob<{ default: ImageMetadata }>('../assets/hero/*-{desktop,mobile}-{start,end}.jpg', {
   eager: true,
 });
@@ -47,7 +53,7 @@ const portrait = '(orientation: portrait) and (max-width: 899px)';
 ---
 
 <div
-  class="hero-media"
+  class:list={['hero-media', BAND_MOBILE.has(video) && 'hero-media--band']}
   data-hero-frames={FRAMES}
   data-desktop={`/assets/hero/${video}-desktop/`}
   data-mobile={`/assets/hero/${video}-mobile/`}

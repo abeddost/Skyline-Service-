@@ -18,7 +18,7 @@ import sharp from 'sharp';
 
 const SOURCES = resolve(import.meta.dirname, '../../skyline-hero-videos');
 const clips = {
-  buero: { desktop: '1-buero-desktop-16x9.mp4', mobile: '1-buero-mobile-9x16.mp4' },
+  buero: { desktop: '1-buero-desktop-16x9.mp4', mobile: '1-buero-mobile-9x16-v2.mp4' },
   treppenhaus: { desktop: '2-treppenhaus-desktop-16x9.mp4', mobile: '2-treppenhaus-mobile-9x16.mp4' },
   entruempelung: { desktop: '3-entruempelung-desktop-16x9.mp4', mobile: '3-entruempelung-mobile-9x16.mp4' },
   umzug: { desktop: '4-umzug-desktop-16x9.mp4', mobile: '4-umzug-mobile-9x16.mp4' },
