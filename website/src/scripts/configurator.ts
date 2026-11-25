@@ -182,7 +182,7 @@ export function initConfigurator() {
 
   const summary = () => {
     const chosen = serviceBoxes.filter((b) => b.checked).map((b) => b.value);
-    const out = ['Hallo Mainblick, ich möchte ein unverbindliches Angebot.', '', `Leistungen: ${chosen.join(', ')}`];
+    const out = ['Hallo Mainstadt Reinigung, ich möchte ein unverbindliches Angebot.', '', `Leistungen: ${chosen.join(', ')}`];
     for (const g of groups) {
       if (g.hidden) continue;
       const lines = valueOf(g);

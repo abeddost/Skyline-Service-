@@ -1,6 +1,6 @@
-# Mainblick Reinigung & Gebäudeservice website
+# Mainstadt Reinigung & Gebäudeservice website
 
-German website for Mainblick Reinigung & Gebäudeservice Frankfurt, Inh. Rasheed Khodjazada (Frankfurt am Main; formerly Skyline Service): cleaning, moving and junk removal. Static site built with Astro, made to be hosted on Vercel.
+German website for Mainstadt Reinigung & Gebäudeservice Frankfurt, Inh. Rasheed Khodjazada (Frankfurt am Main; formerly Skyline Service): cleaning, moving and junk removal. Static site built with Astro, made to be hosted on Vercel.
 
 ## Run it
 
@@ -14,7 +14,7 @@ npm run preview   # serves dist/ locally
 ## Put it on Vercel
 
 1. Import the project in Vercel and set **Root Directory** to `website`. Vercel detects Astro on its own.
-2. Add the environment variable `SITE_URL` with the public address, for example `https://skyline-service.vercel.app`. Canonical links, the sitemap, `robots.txt` and share images are built from it. Change it when the real domain is connected, then redeploy.
+2. Add the environment variable `SITE_URL` with the public address, for example `https://skyline-service.vercel.app`. Canonical links, the sitemap, `robots.txt` and share images are built from it. The planned domain is **mainstadt-reinigung.de**: once it is registered and connected in Vercel, set `SITE_URL` to `https://mainstadt-reinigung.de` and redeploy.
 3. Redirect the old address `skyline-service.netlify.app` to the new one, because printed cards and flyers show it.
 
 ## Open points for the owner (TODO)

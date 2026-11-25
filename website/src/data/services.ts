@@ -155,7 +155,7 @@ const all: Service[] = [
     name: 'Büroreinigung',
     tagline: 'Saubere Arbeitsplätze für mehr Erfolg',
     icon: 'chair',
-    title: 'Büroreinigung Frankfurt – saubere Arbeitsplätze | Mainblick',
+    title: 'Büroreinigung Frankfurt – saubere Arbeitsplätze | Mainstadt Reinigung',
     h1: 'Büroreinigung in Frankfurt am Main',
     description:
       'Büroreinigung in Frankfurt: saubere Arbeitsplätze, Küchen und Sanitärräume im festen Rhythmus. Zuverlässig, pünktlich, umweltfreundlich. Jetzt anfragen.',
@@ -279,7 +279,7 @@ const all: Service[] = [
     name: 'Treppenhausreinigung',
     tagline: 'Ein gepflegter erster Eindruck',
     icon: 'stairs',
-    title: 'Treppenhausreinigung Frankfurt – fester Rhythmus | Mainblick',
+    title: 'Treppenhausreinigung Frankfurt – fester Rhythmus | Mainstadt Reinigung',
     h1: 'Treppenhausreinigung in Frankfurt am Main',
     description:
       'Treppenhausreinigung in Frankfurt für Hausverwaltungen, WEGs und Vermieter. Fester Rhythmus, gründliche Arbeit. Jetzt unverbindlich anfragen.',
@@ -494,7 +494,7 @@ const all: Service[] = [
     name: 'Entrümpelung',
     tagline: 'Platz für Neues',
     icon: 'box',
-    title: 'Entrümpelung & Haushaltsauflösung Frankfurt | Mainblick',
+    title: 'Entrümpelung & Haushaltsauflösung Frankfurt | Mainstadt Reinigung',
     h1: 'Entrümpelung & Haushaltsauflösung in Frankfurt',
     description:
       'Entrümpelung in Frankfurt: Haushaltsauflösung, Keller, Dachboden und Sperrmüll mit fachgerechter Entsorgung. Schnell wieder Platz. Jetzt Angebot anfragen.',
