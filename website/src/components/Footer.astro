@@ -1,4 +1,5 @@
 ---
+import DesignerCredit from "./DesignerCredit.astro";
 import Logo from './Logo.astro';
 import { business, whatsappLink, mailLink } from '../config';
 import { services } from '../data/services';
@@ -47,6 +48,7 @@ const year = new Date().getFullYear();
     <div class="footer__bottom">
       <span>© {year} {business.legalName}</span>
       <span>{business.claim}</span>
+      <DesignerCredit site="skyline-service" />
     </div>
   </div>
 </footer>
