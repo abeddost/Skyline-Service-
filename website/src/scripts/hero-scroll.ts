@@ -6,9 +6,12 @@
 type Connection = { saveData?: boolean; effectiveType?: string };
 
 const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
-// The picture reaches "after" a little before the hero lets go, so the result
-// is visible for a moment while the hero is still pinned.
-const SCRUB_END = 0.86;
+// Desktop: the picture reaches "after" a little before the hero lets go, so
+// the result is visible for a moment while the hero is still pinned.
+// Phones: the "after" picture stays on screen anyway while the hero scrolls
+// away, so there the scrub uses the whole pinned stretch.
+const SCRUB_END_DESKTOP = 0.86;
+const SCRUB_END_PHONE = 1;
 
 export function initHeroScroll() {
   const hero = document.querySelector<HTMLElement>('[data-hero-scroll]');
@@ -22,6 +25,7 @@ export function initHeroScroll() {
   const canvas = media.querySelector('canvas');
   const ctx = canvas?.getContext('2d', { alpha: false });
   const portrait = matchMedia('(orientation: portrait) and (max-width: 899px)').matches;
+  const scrubEnd = portrait ? SCRUB_END_PHONE : SCRUB_END_DESKTOP;
   const base = portrait ? media.dataset.mobile : media.dataset.desktop;
   const end = portrait ? media.dataset.endMobile : media.dataset.endDesktop;
   const count = Number(media.dataset.heroFrames ?? 0);
@@ -62,7 +66,7 @@ export function initHeroScroll() {
   };
 
   const draw = (p: number) => {
-    const f = clamp(p / SCRUB_END) * (count - 1);
+    const f = clamp(p / scrubEnd) * (count - 1);
     let a = below(Math.floor(f));
     let b = above(Math.ceil(f));
     if (a < 0) a = b;
@@ -90,7 +94,7 @@ export function initHeroScroll() {
 
   // Progress line at the bottom edge and the fading "Scrollen" hint.
   const setProgress = (p: number) => {
-    sticky.style.setProperty('--p', clamp(p / SCRUB_END).toFixed(3));
+    sticky.style.setProperty('--p', clamp(p / scrubEnd).toFixed(3));
     sticky.style.setProperty('--hint', String(1 - clamp(p / 0.06)));
   };
 

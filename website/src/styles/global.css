@@ -733,12 +733,25 @@ ol {
   .hero__sticky:has(> .hero-media--band) > .container {
     flex-shrink: 0;
   }
+  /* The picture takes the space the text leaves; on short screens it shrinks
+     (down to 150px) so the button is never pushed behind the bottom bar. */
   .hero-media--band {
     position: relative;
     inset: auto;
     flex: 1 1 0;
-    min-height: 260px;
+    min-height: 150px;
     margin-bottom: -40px;
+  }
+  /* Darker under the header, and a soft fade into the page at the bottom
+     instead of a hard edge above the text. */
+  .hero-media--band::after {
+    background: linear-gradient(
+      180deg,
+      rgba(11, 12, 14, 0.8) 0,
+      rgba(11, 12, 14, 0.1) 150px,
+      rgba(11, 12, 14, 0.1) calc(100% - 120px),
+      var(--bg) 100%
+    );
   }
   .hero-media--band :is(img, canvas) {
     object-position: 50% 40%;
@@ -921,7 +934,7 @@ ol {
 .service-card {
   counter-increment: service;
   display: grid;
-  grid-template-columns: 52px 1fr 20px;
+  grid-template-columns: 52px minmax(0, 1fr) 20px;
   align-items: center;
   gap: 4px 16px;
   padding: 16px;
@@ -944,6 +957,10 @@ ol {
   margin: 0;
   font-size: 1.1875rem;
   align-self: end;
+  /* Long German words (Treppenhausreinigung) would otherwise make the card
+     wider than a 320px screen. */
+  hyphens: auto;
+  overflow-wrap: break-word;
 }
 .service-card__tag {
   grid-column: 2;
