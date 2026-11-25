@@ -1,6 +1,6 @@
-# Skyline Service website
+# Mainblick Reinigung & Gebäudeservice website
 
-German website for Skyline Service Rasheed Khodjazada (Frankfurt am Main): cleaning, moving and junk removal. Static site built with Astro, made to be hosted on Vercel.
+German website for Mainblick Reinigung & Gebäudeservice Frankfurt, Inh. Rasheed Khodjazada (Frankfurt am Main; formerly Skyline Service): cleaning, moving and junk removal. Static site built with Astro, made to be hosted on Vercel.
 
 ## Run it
 

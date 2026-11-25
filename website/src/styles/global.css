@@ -418,6 +418,7 @@ ol {
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+  white-space: nowrap;
   color: var(--c-accent);
   margin-top: 5px;
 }
@@ -599,6 +600,11 @@ ol {
 @media (max-width: 360px) {
   .logo__name {
     font-size: 1.125rem;
+  }
+  /* Keeps "Reinigung & Gebäudeservice" on one line next to the menu button. */
+  .logo__tag {
+    font-size: 0.5625rem;
+    letter-spacing: 0.08em;
   }
 }
 

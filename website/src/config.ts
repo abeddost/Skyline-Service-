@@ -3,8 +3,13 @@
 // component reads them from here.
 
 export const business = {
-  brand: 'Skyline Service',
-  legalName: 'Skyline Service Rasheed Khodjazada',
+  // Full name, e.g. for page titles and the Google Business Profile.
+  brand: 'Mainblick Reinigung & Gebäudeservice Frankfurt',
+  // Short forms: the wordmark in the logo and the line under it.
+  shortName: 'Mainblick',
+  descriptor: 'Reinigung & Gebäudeservice',
+  // Must match the trade registration (Gewerbeanmeldung) exactly.
+  legalName: 'Mainblick Reinigung & Gebäudeservice Frankfurt, Inh. Rasheed Khodjazada',
   owner: 'Rasheed Khodjazada',
   street: 'Grazer Weg 38',
   postalCode: '60599',
@@ -31,7 +36,7 @@ export const flags = {
   beforeAfterIsSymbolic: true,
 } as const;
 
-export function whatsappLink(text = 'Hallo Skyline Service, ich interessiere mich für ein unverbindliches Angebot.') {
+export function whatsappLink(text = 'Hallo Mainblick, ich interessiere mich für ein unverbindliches Angebot.') {
   return `https://wa.me/${business.whatsappNumber}?text=${encodeURIComponent(text)}`;
 }
 

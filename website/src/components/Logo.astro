@@ -1,17 +1,18 @@
 ---
 // Logo: skyline behind a roof line with a four-point sparkle.
-// The icon is inline SVG; the wordmark is live text in the display font.
+// The icon is inline SVG; the wordmark is live text in the display font:
+// "Mainblick" with "Reinigung & Gebäudeservice" underneath.
+import { business } from '../config';
 interface Props {
   id?: string;
   size?: number;
   wordmark?: boolean;
-  tagline?: boolean;
 }
-const { id = 'logo', size = 40, wordmark = true, tagline = false } = Astro.props;
+const { id = 'logo', size = 40, wordmark = true } = Astro.props;
 ---
 
 <span class="logo">
-  <svg class="logo__icon" width={size} height={size} viewBox="0 0 64 64" role="img" aria-label="Skyline Service Logo">
+  <svg class="logo__icon" width={size} height={size} viewBox="0 0 64 64" role="img" aria-label={`${business.shortName} Logo`}>
     <defs>
       <linearGradient id={`${id}-g`} x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
         <stop offset="0" style="stop-color:var(--accent-light)"></stop>
@@ -44,8 +45,8 @@ const { id = 'logo', size = 40, wordmark = true, tagline = false } = Astro.props
   {
     wordmark && (
       <span class="logo__text">
-        <span class="logo__name">Skyline Service</span>
-        {tagline && <span class="logo__tag">Sauberkeit mit System</span>}
+        <span class="logo__name">{business.shortName}</span>
+        <span class="logo__tag">{business.descriptor}</span>
       </span>
     )
   }
